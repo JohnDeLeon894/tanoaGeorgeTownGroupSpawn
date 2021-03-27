@@ -4,5 +4,4 @@ if ( !isNull player) then {
 	[playerGroup, BLUE_GROUP_SIZE, BLUE_UNITS, WEST_SPAWN] call spawnGroups;
 	playerUnit = units playerGroup select 0;
 	selectPlayer playerUnit;
-
 };

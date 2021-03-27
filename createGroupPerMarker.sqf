@@ -1,6 +1,6 @@
 groupCount = 0;
 spawnGroups = compile preprocessFileLineNumbers 'spawngroup.sqf';
-callGroupTrigger = compile preprocessFileLineNumbers'createGroupTrigger.sqf';
+groupTrigger = compile preprocessFileLineNumbers'createGroupTrigger.sqf';
 
 private _groupAliveCheck = {
 	private _groupName = _this select 0;
@@ -20,6 +20,9 @@ private _spawnGroup = {
 	private _groupSize = _this select 1;
 	private _unitsArray = _this select 2;
 	private _spawnPoint = _this select 3;
+	if( _side == east ) then {
+		_spawnPoint = getMarkerPos _x;
+	};
 	{
 		private _markerPos = markerPos _x;
 		private _groupName = missionNamespace getVariable format['%1_%2',_side, _x];
@@ -29,9 +32,8 @@ private _spawnGroup = {
 			missionNamespace setVariable [format['%1_%2',_side, _x], createGroup [_side, true]];
 			_groupName = missionNamespace getVariable format['%1_%2',_side, _x];
 			player globalChat format ['group name? %1', _groupName];
-			[_groupName, _groupSize, _unitsArray, _spawnPoint, _side] call spawnGroups;
-			[_x, _side] call callGroupTrigger;
-			
+			[_groupName, _groupSize, _unitsArray, _spawnPoint, _side, _x] call spawnGroups;
+			[_x, _side] call groupTrigger;
 		};
 	} forEach allMapMarkers;
 };
